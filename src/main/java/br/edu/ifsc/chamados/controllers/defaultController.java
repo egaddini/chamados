@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class defaultController {
 
     @GetMapping("/")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public String index() {
         return "hello world";
     }
-    //@PreAuthorize("hasHole('ROLE_ADMIN')")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+
     @GetMapping("/only-authenticated")
     public String depois() {
         return "hello world";

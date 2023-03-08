@@ -9,7 +9,6 @@ public class ChamadosApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ChamadosApplication.class, args);
-		System.out.println(new BCryptPasswordEncoder().encode("password"));
 	}
 
 }

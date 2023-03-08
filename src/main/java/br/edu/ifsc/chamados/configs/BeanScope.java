@@ -1,4 +1,4 @@
-package br.edu.ifsc.chamados.configs.security;
+package br.edu.ifsc.chamados.configs;
 
 public class BeanScope {
 

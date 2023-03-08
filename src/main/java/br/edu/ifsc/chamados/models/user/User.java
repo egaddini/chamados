@@ -1,65 +1,59 @@
 package br.edu.ifsc.chamados.models.user;
 
-import br.edu.ifsc.chamados.models.Role;
-import jdk.jfr.Timespan;
-import jdk.jfr.Timestamp;
+import br.edu.ifsc.chamados.enums.Role;
+import br.edu.ifsc.chamados.models.Token;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.Collection;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
 @Data
-@Entity
-@Builder()
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
-public class User implements UserDetails, Serializable {
-
-    public static final Long serialVersionUID = 1L;
+@Entity
+@Table(name = "_user")
+public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer userId;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String surname;
-
-    @Column(unique = true, nullable = false)
-    private String username;
-
-    @Column(unique = true, nullable = false)
+    @GeneratedValue
+    private Integer id;
+    private String firstname;
+    private String lastname;
     private String email;
-
-    private String phone;
-
-    @Column(nullable = false)
     private String password;
 
-    @Timestamp
-    private long timestamp;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @ManyToMany
-    @JoinTable(name = "user_role",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
@@ -81,5 +75,4 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
-
 }
