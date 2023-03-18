@@ -1,7 +1,7 @@
 package br.edu.ifsc.chamados.models.user;
 
 import br.edu.ifsc.chamados.enums.Role;
-import br.edu.ifsc.chamados.models.Token;
+import br.edu.ifsc.chamados.models.auth.Token;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

@@ -1,15 +1,15 @@
-package br.edu.ifsc.chamados.services.user;
+package br.edu.ifsc.chamados.services.auth;
 
 import br.edu.ifsc.chamados.configs.security.JwtService;
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.enums.TokenType;
-import br.edu.ifsc.chamados.models.Token;
+import br.edu.ifsc.chamados.models.auth.Token;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.repositories.TokenRepository;
 import br.edu.ifsc.chamados.repositories.UserRepository;
 import br.edu.ifsc.chamados.requests.AuthenticationRequest;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
-import br.edu.ifsc.chamados.response.AuthenticationResponse;
+import br.edu.ifsc.chamados.response.auth.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

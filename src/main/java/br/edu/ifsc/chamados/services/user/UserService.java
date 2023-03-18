@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Scope(BeanScope.PROTOTYPE)
-public class UserServiceImpl {
+public class UserService {
 
     @Autowired
     UserRepository ur;

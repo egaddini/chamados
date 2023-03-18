@@ -1,6 +1,6 @@
 package br.edu.ifsc.chamados.repositories;
 
-import br.edu.ifsc.chamados.models.Token;
+import br.edu.ifsc.chamados.models.auth.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

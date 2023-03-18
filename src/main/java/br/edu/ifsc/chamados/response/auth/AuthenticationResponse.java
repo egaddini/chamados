@@ -1,4 +1,4 @@
-package br.edu.ifsc.chamados.response;
+package br.edu.ifsc.chamados.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package br.edu.ifsc.chamados.models;
+package br.edu.ifsc.chamados.models.auth;
 
 import br.edu.ifsc.chamados.enums.TokenType;
 import br.edu.ifsc.chamados.models.user.User;
