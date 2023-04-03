@@ -4,7 +4,6 @@ import br.edu.ifsc.chamados.requests.AuthenticationRequest;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.auth.AuthenticationResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface AuthenticationControllerV1 {

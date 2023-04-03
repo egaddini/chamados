@@ -10,6 +10,7 @@ import br.edu.ifsc.chamados.repositories.UserRepository;
 import br.edu.ifsc.chamados.requests.AuthenticationRequest;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.auth.AuthenticationResponse;
+import br.edu.ifsc.chamados.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,18 +25,16 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .build();
-        var savedUser = repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+
+        var savedUser =  userService.saveUser(request);
+
+        var jwtToken = jwtService.generateToken(savedUser);
+
         saveUserToken(savedUser, jwtToken);
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
