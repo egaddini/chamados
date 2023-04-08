@@ -1,31 +1,40 @@
 package br.edu.ifsc.chamados.services.user;
 
-import br.edu.ifsc.chamados.api.models.user.IUser;
+import br.edu.ifsc.chamados.api.services.user.IUserService;
 import br.edu.ifsc.chamados.configs.BeanScope;
+import br.edu.ifsc.chamados.configs.exceptions.DefaultException;
+import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
+import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.repositories.UserRepository;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
+import br.edu.ifsc.chamados.response.user.UserResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.lang.module.FindException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-//@Scope(BeanScope.PROTOTYPE)
-public class UserService {
-    @Autowired
-    private UserRepository repository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+@AllArgsConstructor
+@Scope(BeanScope.PROTOTYPE)
+public class UserService implements IUserService {
+    private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public User saveUser(RegisterRequest request) {
+    @Override
+    public List<UserResponse> findUsers() {
+        List<User> users = repository.findAll();
+        return users.stream().map(i -> new UserResponse(i.getId(), i.getFirstname(), i.getLastname(), i.getEmail(), i.getRole())).collect(Collectors.toList());
+    }
+    @Override
+    public User saveUser(RegisterRequest request) throws Exception {
 
-        User existUser = repository.findByEmail(request.getEmail()).orElseThrow(() -> new FindException("Email já registrado"));
+        validEmail(request.getEmail());
 
         User user = User.builder()
                 .firstname(request.getFirstname())
@@ -37,10 +46,49 @@ public class UserService {
 
         return repository.save(user);
     }
+    @Override
+    public UserResponse updateUser(RegisterRequest userUpdt, Integer id) throws DefaultException {
 
-    public User findUsers() {
-        String email = "edder@gmail.com";
-        return repository.findByEmail(email).get();
+        User user = findUserById(id);
+        boolean isChanged = false;
+
+        if (!user.getEmail().equals(userUpdt.getEmail())) {
+            user.setEmail(userUpdt.getEmail());
+            validEmail(userUpdt.getEmail());
+            isChanged = true;
+        }
+        if (!user.getFirstname().equals(userUpdt.getFirstname())) {
+            user.setFirstname(userUpdt.getFirstname());
+            isChanged = true;
+        }
+        if (!user.getLastname().equals(userUpdt.getLastname())) {
+            user.setLastname(userUpdt.getLastname());
+            isChanged = true;
+        }
+        if (!user.getPassword().equals(passwordEncoder.encode(userUpdt.getPassword()))) {
+            user.setPassword(passwordEncoder.encode(userUpdt.getPassword()));
+            isChanged = true;
+        }
+
+        if (isChanged) repository.save(user);
+
+        return new UserResponse(user);
+    }
+    @Override
+    public void deleteUser(Integer id) {
+        repository.deleteById(id);
+    }
+    @Override
+    public User findUserById(Integer id) throws RecordNotFound2Exception {
+        return repository.findById(id).orElseThrow(() -> new RecordNotFound2Exception(id.toString()));
+    }
+    @Override
+    public User findUserByEmail(String email) throws RecordNotFound2Exception {
+        return repository.findByEmail(email).orElseThrow(() -> new RecordNotFound2Exception(email));
+    }
+    private void validEmail(String email) throws RegisterUser2Exception {
+        Optional<User> existUser = repository.findByEmail(email);
+        if (!existUser.isEmpty()) throw new RegisterUser2Exception("Email");
     }
 
 }

@@ -15,7 +15,5 @@ public interface IUser extends Serializable {
     String getFirstname();
     String getLastname();
     String getEmail();
-    String getPassword();
     Role getRole();
-    List<Token> getTokens();
 }

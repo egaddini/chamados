@@ -6,6 +6,7 @@ import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.auth.AuthenticationResponse;
 import br.edu.ifsc.chamados.services.auth.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +20,10 @@ public class AuthenticationControllerV1Impl implements AuthenticationControllerV
     private final AuthenticationService service;
     @Override
     @PostMapping(REGISTER_PATH)
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws Exception {
         return ResponseEntity.ok(service.register(request));
     }
-    @Override
+    //@Override
     @PostMapping(AUTHENTICATE_PATH)
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));

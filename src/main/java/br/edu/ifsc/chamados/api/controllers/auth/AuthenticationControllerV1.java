@@ -12,6 +12,6 @@ public interface AuthenticationControllerV1 {
     public static final String REGISTER_PATH = "/register";
     public static final String AUTHENTICATE_PATH = "/authenticate";
 
-    ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request);
-    ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request);
+    ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws Exception;
+    //ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request);
 }

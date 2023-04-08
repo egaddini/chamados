@@ -23,6 +23,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "_user")
 public class User implements UserDetails, IUser {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -34,7 +36,6 @@ public class User implements UserDetails, IUser {
     private String email;
     @Column(unique = true, nullable = false)
     private String password;
-
     @Enumerated(EnumType.STRING)
     private Role role;
 
