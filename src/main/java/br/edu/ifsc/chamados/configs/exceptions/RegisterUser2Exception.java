@@ -15,7 +15,7 @@ public class RegisterUser2Exception extends DefaultException {
 
     @Override
     public String getMessage() {
-        return String.format("Não é possível Registrar, %s: %s já registrado.", campo, valor);
+        return String.format("%s %s já foi utilizado.", campo, valor);
     }
 
     @Override

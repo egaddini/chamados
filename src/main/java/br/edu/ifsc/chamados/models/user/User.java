@@ -5,6 +5,7 @@ import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.models.auth.Token;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -46,6 +47,8 @@ public class User implements UserDetails, IUser {
     private Boolean active = false;
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+    @Column(nullable = false)
+    private LocalDateTime dataCriacao;
     @Timestamp
     private Long timestamp;
 

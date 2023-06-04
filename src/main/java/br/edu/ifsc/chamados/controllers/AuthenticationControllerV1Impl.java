@@ -26,7 +26,7 @@ public class AuthenticationControllerV1Impl implements AuthenticationControllerV
     }
     //@Override
     @PostMapping(AUTHENTICATE_PATH)
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) throws Exception {
         return ResponseEntity.ok(service.authenticate(request));
     }
 

@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SucessDTO {
 
-    private String mensagem;
+    private String mesage;
 
 }

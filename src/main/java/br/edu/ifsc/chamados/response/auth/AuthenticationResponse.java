@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -20,10 +21,14 @@ public class AuthenticationResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private String firstname;
-    private String lastname;
     private String email;
+    private String nome;
+    private String sobrenome;
+    private Long telefone;
     @Enumerated(EnumType.STRING)
     private Role role;
     private String token;
+    private Boolean habilitado;
+    private LocalDateTime dataCriacao;
+
 }

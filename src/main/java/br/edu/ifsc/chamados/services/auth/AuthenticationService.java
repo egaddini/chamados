@@ -1,6 +1,8 @@
 package br.edu.ifsc.chamados.services.auth;
 
 import br.edu.ifsc.chamados.api.models.user.IUser;
+import br.edu.ifsc.chamados.configs.exceptions.InactiveUser2Exception;
+import br.edu.ifsc.chamados.configs.exceptions.UnauthorizedException;
 import br.edu.ifsc.chamados.configs.security.JwtService;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.enums.Role;
@@ -31,19 +33,23 @@ public class AuthenticationService {
     private final UserService userService;
 
     public SucessDTO register(RegisterRequest request) throws Exception {
-        User savedUser =  userService.saveUser(request);
+        userService.saveUser(request);
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public AuthenticationResponse authenticate(AuthenticationRequest request) throws Exception {
+
+        var user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new UnauthorizedException());
 
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
+            new UsernamePasswordAuthenticationToken(
+                request.getEmail(),
+                request.getPassword()
+            )
         );
-        var user = repository.findByEmail(request.getEmail()).orElseThrow();
+
+        repository.findByEmailAndActiveIs(request.getEmail(), true).orElseThrow(() -> new InactiveUser2Exception(request.getEmail()));
+
         var jwtToken = jwtService.generateToken(user);
 
         revokeAllUserTokens(user);
@@ -76,13 +82,16 @@ public class AuthenticationService {
 
     private AuthenticationResponse buildAuthResponse(User user, String token) {
         return AuthenticationResponse.builder()
-                .id(user.getId())
-                .firstname(user.getFirstname())
-                .lastname(user.getLastname())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .token(token)
-                .build();
+            .id(user.getId())
+            .nome(user.getFirstname())
+            .sobrenome(user.getLastname())
+            .email(user.getEmail())
+            .role(user.getRole())
+            .token(token)
+            .habilitado(user.getActive())
+            .dataCriacao(user.getDataCriacao())
+            .telefone(user.getPhone())
+            .build();
     }
 
 }

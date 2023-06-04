@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,17 +39,16 @@ public class UserService implements IUserService {
 
         validPhone(request.getPhone());
 
-        User user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .phone(request.getPhone())
-                .active(false)
-                .build();
-
-        return repository.save(user);
+        return repository.save(User.builder()
+            .firstname(request.getFirstname())
+            .lastname(request.getLastname())
+            .email(request.getEmail())
+            .password(passwordEncoder.encode(request.getPassword()))
+            .role(Role.USER)
+            .phone(request.getPhone())
+            .active(false)
+            .dataCriacao(LocalDateTime.now())
+            .build());
     }
     @Override
     public UserResponse updateUser(RegisterRequest userUpdt, Integer id) throws DefaultException {
