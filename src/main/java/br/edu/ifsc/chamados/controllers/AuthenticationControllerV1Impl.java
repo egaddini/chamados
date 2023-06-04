@@ -1,6 +1,7 @@
 package br.edu.ifsc.chamados.controllers;
 
 import br.edu.ifsc.chamados.api.controllers.auth.AuthenticationControllerV1;
+import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.requests.AuthenticationRequest;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.auth.AuthenticationResponse;
@@ -20,7 +21,7 @@ public class AuthenticationControllerV1Impl implements AuthenticationControllerV
     private final AuthenticationService service;
     @Override
     @PostMapping(REGISTER_PATH)
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) throws Exception {
+    public ResponseEntity<SucessDTO> register(@RequestBody RegisterRequest request) throws Exception {
         return ResponseEntity.ok(service.register(request));
     }
     //@Override

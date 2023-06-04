@@ -6,13 +6,16 @@ public class RegisterUser2Exception extends DefaultException {
 
     private String campo;
 
-    public RegisterUser2Exception(String campo) {
+    private String valor;
+
+    public RegisterUser2Exception(String campo, String valor) {
         this.campo = campo;
+        this.valor = valor;
     }
 
     @Override
     public String getMessage() {
-        return String.format("Não é possível continuar, %s já utilizado", campo);
+        return String.format("Não é possível Registrar, %s: %s já registrado.", campo, valor);
     }
 
     @Override

@@ -44,7 +44,7 @@ public class UserControllerV1Impl implements UserControllerV1 {
 
     @PutMapping(ID_PATH)
     public ResponseEntity<UserResponse> updateUser(@PathVariable("id") Integer id, @RequestBody RegisterRequest request) throws DefaultException {
-        return new ResponseEntity<UserResponse>(userSvc.updateUser(request, id), HttpStatus.OK); //usvc.getUser(id);
+        return new ResponseEntity<UserResponse>(userSvc.updateUser(request, id), HttpStatus.OK);
     }
 
     @GetMapping(EMAIL_PATH)

@@ -36,12 +36,16 @@ public class UserService implements IUserService {
 
         validEmail(request.getEmail());
 
+        validPhone(request.getPhone());
+
         User user = User.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .phone(request.getPhone())
+                .active(false)
                 .build();
 
         return repository.save(user);
@@ -88,7 +92,11 @@ public class UserService implements IUserService {
     }
     private void validEmail(String email) throws RegisterUser2Exception {
         Optional<User> existUser = repository.findByEmail(email);
-        if (!existUser.isEmpty()) throw new RegisterUser2Exception("Email");
+        if (!existUser.isEmpty()) throw new RegisterUser2Exception("Email", email);
+    }
+    private void validPhone(Long phone) throws RegisterUser2Exception {
+        Optional<User> existUser = repository.findByPhone(phone);
+        if (!existUser.isEmpty()) throw new RegisterUser2Exception("Phone", Long.toString(phone));
     }
 
 }

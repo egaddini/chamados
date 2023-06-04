@@ -2,6 +2,7 @@ package br.edu.ifsc.chamados.services.auth;
 
 import br.edu.ifsc.chamados.api.models.user.IUser;
 import br.edu.ifsc.chamados.configs.security.JwtService;
+import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.enums.TokenType;
 import br.edu.ifsc.chamados.models.auth.Token;
@@ -29,11 +30,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
 
-    public AuthenticationResponse register(RegisterRequest request) throws Exception {
+    public SucessDTO register(RegisterRequest request) throws Exception {
         User savedUser =  userService.saveUser(request);
-        var jwtToken = jwtService.generateToken(savedUser);
-        saveUserToken(savedUser, jwtToken);
-        return buildAuthResponse(savedUser, jwtToken);
+        return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

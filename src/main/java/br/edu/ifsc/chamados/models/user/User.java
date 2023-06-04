@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.List;
+
+import jdk.jfr.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,14 +35,19 @@ public class User implements UserDetails, IUser {
     @Column(unique = true, nullable = false)
     private String lastname;
     @Column(unique = true, nullable = false)
+    private Long phone;
+    @Column(unique = true, nullable = false)
     private String email;
     @Column(unique = true, nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-
+    @Column(nullable = false)
+    private Boolean active = false;
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+    @Timestamp
+    private Long timestamp;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
