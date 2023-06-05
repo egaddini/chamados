@@ -45,11 +45,11 @@ public class User implements UserDetails, IUser {
     private Role role;
     @Column(nullable = false)
     private Boolean active = false;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Token> tokens;
     @Column(nullable = false)
     private LocalDateTime dataCriacao;
-    @Timestamp
+    @Version
     private Long timestamp;
 
     @Override

@@ -4,6 +4,7 @@ import br.edu.ifsc.chamados.api.controllers.user.UserControllerV1;
 import br.edu.ifsc.chamados.api.services.user.IUserService;
 import br.edu.ifsc.chamados.configs.exceptions.DefaultException;
 import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
+import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.user.UserResponse;
@@ -32,9 +33,9 @@ public class UserControllerV1Impl implements UserControllerV1 {
     }
 
     @DeleteMapping(ID_PATH)
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<SucessDTO> deleteUser(@PathVariable("id") Integer id) throws DefaultException {
         userSvc.deleteUser(id);
-        return new ResponseEntity<String>("Usuário removido com sucesso", HttpStatus.OK);
+        return ResponseEntity.ok(new SucessDTO("Usuário removido com sucesso"));
     }
 
     @GetMapping(ID_PATH)
@@ -50,6 +51,11 @@ public class UserControllerV1Impl implements UserControllerV1 {
     @GetMapping(EMAIL_PATH)
     public User getUserByEmail(@PathVariable("email") String email) throws RecordNotFound2Exception {
         return userSvc.findUserByEmail(email);
+    }
+
+    @GetMapping(ATIVA_PATH)
+    public ResponseEntity<SucessDTO> ativaByEmail(@PathVariable("email") String email) throws RecordNotFound2Exception {
+        return ResponseEntity.ok(userSvc.ativaUsuario(email));
     }
 
 }

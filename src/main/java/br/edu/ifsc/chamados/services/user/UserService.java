@@ -5,6 +5,7 @@ import br.edu.ifsc.chamados.configs.BeanScope;
 import br.edu.ifsc.chamados.configs.exceptions.DefaultException;
 import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
+import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.repositories.UserRepository;
@@ -30,7 +31,7 @@ public class UserService implements IUserService {
     @Override
     public List<UserResponse> findUsers() {
         List<User> users = repository.findAll();
-        return users.stream().map(i -> new UserResponse(i.getId(), i.getFirstname(), i.getLastname(), i.getEmail(), i.getRole())).collect(Collectors.toList());
+        return users.stream().map(i -> new UserResponse(i.getId(), i.getEmail(), i.getFirstname(), i.getLastname(), i.getPhone(), i.getRole(), null, i.getActive(), i.getDataCriacao())).collect(Collectors.toList());
     }
     @Override
     public User saveUser(RegisterRequest request) throws Exception {
@@ -76,11 +77,11 @@ public class UserService implements IUserService {
 
         if (isChanged) repository.save(user);
 
-        return new UserResponse(user);
+        return new UserResponse(user.getId(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getPhone(), user.getRole(), null, user.getActive(), user.getDataCriacao());
     }
     @Override
-    public void deleteUser(Integer id) {
-        repository.deleteById(id);
+    public void deleteUser(Integer id) throws RecordNotFound2Exception {
+        repository.delete(findUserById(id));
     }
     @Override
     public User findUserById(Integer id) throws RecordNotFound2Exception {
@@ -97,6 +98,14 @@ public class UserService implements IUserService {
     private void validPhone(Long phone) throws RegisterUser2Exception {
         Optional<User> existUser = repository.findByPhone(phone);
         if (!existUser.isEmpty()) throw new RegisterUser2Exception("Phone", Long.toString(phone));
+    }
+
+    @Override
+    public SucessDTO ativaUsuario(String email) throws RecordNotFound2Exception {
+        User user = findUserByEmail(email);
+        user.setActive(user.getActive() ? false: true);
+        repository.save(user);
+        return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
 }
