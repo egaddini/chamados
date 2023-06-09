@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping(AuthenticationControllerV1.BASE_PATH)
 public class AuthenticationControllerV1Impl implements AuthenticationControllerV1 {
+
     private final AuthenticationService service;
     @Override
     @PostMapping(REGISTER_PATH)

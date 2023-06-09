@@ -1,6 +1,5 @@
 package br.edu.ifsc.chamados.models.call;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,16 +14,13 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Setor implements Serializable {
+public class Prioritised implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue
     private Integer id;
-    @Column(unique = true, nullable = false, length = 3)
-    private String sigla;
-    @Column(unique = true, nullable = false)
     private String nome;
+    private Integer peso;
 
 }
