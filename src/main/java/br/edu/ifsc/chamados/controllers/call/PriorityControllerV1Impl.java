@@ -7,10 +7,9 @@ import br.edu.ifsc.chamados.services.call.PriorityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +19,10 @@ public class PriorityControllerV1Impl implements PriorityControllerV1{
     @Autowired
     private PriorityService svc;
 
+    @GetMapping
+    public List<Prioritised> findAll(){
+        return svc.findAll();
+    }
     @PostMapping()
     public ResponseEntity<SucessDTO> save(@RequestBody Prioritised request) throws Exception {
         return ResponseEntity.ok(svc.save(request));

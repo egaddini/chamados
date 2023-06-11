@@ -24,31 +24,18 @@ public class SetorControllerV1Impl implements SetorControllerV1 {
     @Autowired
     private SetorService svc;
 
+    @GetMapping
+    public List<Setor> findAll(){
+        return svc.findAll();
+    }
+
+
     @PostMapping()
     public ResponseEntity<SucessDTO> save(@RequestBody Setor request) throws Exception {
         return ResponseEntity.ok(svc.save(request));
     }
 
-//    @GetMapping()
-//    private List<Setor> getUsers() {
-//        return userSvc.findUsers();
-//    }
-//
-//    @DeleteMapping(ID_PATH)
-//    public ResponseEntity<SucessDTO> deleteUser(@PathVariable("id") Integer id) throws DefaultException {
-//        userSvc.deleteUser(id);
-//        return ResponseEntity.ok(new SucessDTO("Usuário removido com sucesso"));
-//    }
-//
-//    @GetMapping(ID_PATH)
-//    public User getUser(@PathVariable("id") Integer id) throws RecordNotFound2Exception {
-//        return userSvc.findUserById(id);
-//    }
-//
-//    @PutMapping(ID_PATH)
-//    public ResponseEntity<UserResponse> updateUser(@PathVariable("id") Integer id, @RequestBody RegisterRequest request) throws DefaultException {
-//        return new ResponseEntity<UserResponse>(userSvc.updateUser(request, id), HttpStatus.OK);
-//    }
+
 
 
 }
