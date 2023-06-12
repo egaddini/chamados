@@ -1,8 +1,10 @@
 package br.edu.ifsc.chamados.services.call;
 
+import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.call.CallType;
+import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.repositories.CallTypeRepository;
 import br.edu.ifsc.chamados.requests.CallTypeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,10 @@ public class CallTypeService {
     private SetorService setorSvc;
     @Autowired
     private PriorityService prioritySvc;
+
+    public CallType findUserById(Integer id) throws RecordNotFound2Exception {
+        return callTypeRepo.findById(id).orElseThrow(() -> new RecordNotFound2Exception(id.toString()));
+    }
 
     public SucessDTO save(CallTypeRequest request) throws Exception {
 

@@ -3,13 +3,15 @@ package br.edu.ifsc.chamados.models.user;
 import br.edu.ifsc.chamados.api.models.user.IUser;
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.models.auth.Token;
+import br.edu.ifsc.chamados.models.call.Call;
+import br.edu.ifsc.chamados.models.call.CallParticipants;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
-import jdk.jfr.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "_user")
 public class User implements UserDetails, IUser {
 
     private static final long serialVersionUID = 1L;
@@ -49,6 +51,10 @@ public class User implements UserDetails, IUser {
     private List<Token> tokens;
     @Column(nullable = false)
     private LocalDateTime dataCriacao;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private Set<CallParticipants> callParticipants;
+
     @Version
     private Long timestamp;
 
