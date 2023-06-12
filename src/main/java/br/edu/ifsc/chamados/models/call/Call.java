@@ -18,11 +18,12 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "_call")
 public class Call {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
     @Column(nullable = false)
     private LocalDateTime dataCriacao;
     @Column(nullable = false)
@@ -39,7 +40,7 @@ public class Call {
     @OneToOne(cascade = CascadeType.ALL)
     private CallType callType;
     @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<CallParticipants> callParticipants;
+    private List<CallParticipants> callParticipants;
     @Column(nullable = false)
     private String descricao;
     @Column(nullable = false)

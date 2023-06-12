@@ -53,7 +53,7 @@ public class User implements UserDetails, IUser {
     private LocalDateTime dataCriacao;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Set<CallParticipants> callParticipants;
+    private List<CallParticipants> callParticipants;
 
     @Version
     private Long timestamp;
