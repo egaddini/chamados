@@ -11,5 +11,8 @@ public class DateUtils {
         return hora.format(formatter);
     }
 
+    public static String getDataHoraFormatado() {
+       return dateTime2StringFormatted(LocalDateTime.now());
+    }
 
 }

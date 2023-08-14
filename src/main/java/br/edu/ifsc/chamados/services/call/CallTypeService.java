@@ -4,7 +4,6 @@ import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.call.CallType;
-import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.repositories.CallTypeRepository;
 import br.edu.ifsc.chamados.requests.CallTypeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class CallTypeService {
     @Autowired
     private CallTypeRepository callTypeRepo;
     @Autowired
-    private SetorService setorSvc;
+    private SectorService setorSvc;
     @Autowired
     private PriorityService prioritySvc;
 

@@ -1,4 +1,4 @@
-package br.edu.ifsc.chamados.controllers;
+package br.edu.ifsc.chamados.controllers.call;
 
 import br.edu.ifsc.chamados.api.controllers.call.CallControllerV1;
 import br.edu.ifsc.chamados.api.controllers.user.UserControllerV1;
@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(CallControllerV1.BASE_PATH)
-public class CallControllerV1Impl {
+public class CallControllerV1Impl implements CallControllerV1 {
 
     @Autowired
     private CallService service;
@@ -31,6 +31,11 @@ public class CallControllerV1Impl {
     @PostMapping()
     public ResponseEntity<SucessDTO> register(@RequestBody CallRequest request) throws Exception {
         return ResponseEntity.ok(service.register(request));
+    }
+
+    @PostMapping(CANCELA_PATH)
+    public ResponseEntity<SucessDTO> cancelar(@PathVariable("id") Integer id, @RequestBody String motivo) throws Exception {
+        return ResponseEntity.ok(service.cancela(id, motivo));
     }
 
 }

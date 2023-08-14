@@ -7,21 +7,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Setor implements Serializable {
+public class Status implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(unique = true, nullable = false, length = 3)
-    private String sigla;
-    @Column(unique = true, nullable = false)
-    private String nome;
+    private Long id;
+    private String name;
+    private String description;
+    private Integer weight;
+    private boolean notify;
 
 }

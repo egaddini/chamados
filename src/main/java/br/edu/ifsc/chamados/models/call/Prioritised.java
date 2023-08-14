@@ -22,6 +22,6 @@ public class Prioritised implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-    private Integer peso;
+    private Integer weight;
 
 }

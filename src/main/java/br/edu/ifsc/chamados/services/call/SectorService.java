@@ -3,8 +3,8 @@ package br.edu.ifsc.chamados.services.call;
 import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
-import br.edu.ifsc.chamados.models.call.Setor;
-import br.edu.ifsc.chamados.repositories.SetorRepository;
+import br.edu.ifsc.chamados.models.call.Sector;
+import br.edu.ifsc.chamados.repositories.SectorRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,23 +13,23 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class SetorService {
+public class SectorService {
 
     @Autowired
-    private SetorRepository setorRepository;
+    private SectorRepository setorRepository;
 
-    public Setor findById(Integer id) throws RecordNotFound2Exception {
+    public Sector findById(Integer id) throws RecordNotFound2Exception {
         return setorRepository.findById(id).orElseThrow(() -> new RecordNotFound2Exception("Setor"));
     }
 
-    public SucessDTO save(Setor setor) throws Exception {
-        if (setorRepository.existsBySigla(setor.getSigla())) throw new RegisterUser2Exception("Sigla", setor.getSigla());
-        if (setorRepository.existsByNome(setor.getNome())) throw new RegisterUser2Exception("Nome", setor.getNome());
-        setorRepository.save(setor);
+    public SucessDTO save(Sector sector) throws Exception {
+        if (setorRepository.existsBySigla(sector.getSigla())) throw new RegisterUser2Exception("Sigla", sector.getSigla());
+        if (setorRepository.existsByNome(sector.getNome())) throw new RegisterUser2Exception("Nome", sector.getNome());
+        setorRepository.save(sector);
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
-    public List<Setor> findAll() {
+    public List<Sector> findAll() {
         return setorRepository.findAll();
     }
 }

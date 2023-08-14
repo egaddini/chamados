@@ -33,7 +33,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .requestMatchers(
             "/api/**"
-
                 )
                 .permitAll()
                 .anyRequest()

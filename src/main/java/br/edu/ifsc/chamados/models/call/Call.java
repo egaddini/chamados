@@ -1,6 +1,5 @@
 package br.edu.ifsc.chamados.models.call;
 
-import br.edu.ifsc.chamados.enums.CallStatus;
 import br.edu.ifsc.chamados.models.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,10 +7,9 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import java.time.LocalDate;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -19,7 +17,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "_call")
-public class Call {
+public class Call implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,9 @@ public class Call {
     private LocalDateTime dataCriacao;
     @Column(nullable = false)
     private LocalDateTime dataUltAtualizacao;
-    @Enumerated(EnumType.STRING)
-    private CallStatus status;
+    @JoinColumn(name = "status_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    private Status status;
     @JoinColumn(name = "solicitante_id")
     @OneToOne(cascade = CascadeType.ALL)
     private User solicitante;
