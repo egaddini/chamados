@@ -4,7 +4,7 @@ import br.edu.ifsc.chamados.api.models.user.IUser;
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.models.auth.Token;
 import br.edu.ifsc.chamados.models.call.Call;
-import br.edu.ifsc.chamados.models.call.CallParticipants;
+//import br.edu.ifsc.chamados.models.call.CallParticipants;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -52,8 +52,8 @@ public class User implements UserDetails, IUser {
     @Column(nullable = false)
     private LocalDateTime dataCriacao;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<CallParticipants> callParticipants;
+//    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+//    private List<CallParticipants> callParticipants;
 
     @Version
     private Long timestamp;

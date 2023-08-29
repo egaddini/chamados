@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -40,11 +41,12 @@ public class Call implements Serializable {
     @JoinColumn(name = "call_type_id")
     @OneToOne(cascade = CascadeType.ALL)
     private CallType callType;
-    @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<CallParticipants> callParticipants;
+//    @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
+//    private List<CallParticipants> callParticipants;
     @Column(nullable = false)
     private String descricao;
-    @Column(nullable = false)
-    private String historico;
+
+    @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = Historic.class)
+    private Set<Historic> historico;
 
 }

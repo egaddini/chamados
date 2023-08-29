@@ -24,8 +24,8 @@ public class CallControllerV1Impl implements CallControllerV1 {
     private CallService service;
 
     @GetMapping()
-    public List<CallResponse> findAll() throws Exception {
-        return service.findAll();
+    public List<CallResponse> findAll(@RequestParam(name = "id", required = false) Long id) throws Exception {
+        return service.findAll(id);
     }
 
     @PostMapping()

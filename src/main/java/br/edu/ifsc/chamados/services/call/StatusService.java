@@ -11,7 +11,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StatusService {
@@ -41,6 +43,10 @@ public class StatusService {
     public SucessDTO delete(Long id) throws RegisterUser2Exception {
         repository.deleteById(id);
         return new SucessDTO("Solicitação realizada com sucesso.");
+    }
+    public List<Integer> findFreeWeights() {
+        return Arrays.asList(1,2,3,4,5,6,7,8,9,10).stream().filter(i -> !repository.findAllBy().stream()
+                     .map(j -> j.getWeight()).collect(Collectors.toList()).contains(i)).collect(Collectors.toList());
     }
 
 

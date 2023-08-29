@@ -31,6 +31,12 @@ public class StatusControllerV1Impl implements StatusControllerV1 {
     public Status findByName(@RequestParam String name) throws RecordNotFound2Exception {
         return svc.findByName(name);
     }
+
+    @GetMapping(FREE_WEIGHTS_PATH)
+    public List<Integer> findFreeWeights() {
+        return svc.findFreeWeights();
+    }
+
     @PostMapping()
     public ResponseEntity<SucessDTO> save(@RequestBody StatusRequest request) throws Exception {
         return ResponseEntity.ok(svc.save(request));
@@ -45,5 +51,7 @@ public class StatusControllerV1Impl implements StatusControllerV1 {
     public Status findById(@PathVariable("id") Long id) throws Exception {
         return svc.findById(id);
     }
+
+
 
 }

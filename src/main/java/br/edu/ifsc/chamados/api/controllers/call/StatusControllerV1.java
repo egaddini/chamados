@@ -6,5 +6,6 @@ public interface StatusControllerV1 {
 
     public static final String ID_PATH = "/{id}";
     public static final String NAME_PATH = "/name";
+    public static final String FREE_WEIGHTS_PATH = "/free-weights";
 
 }

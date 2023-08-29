@@ -23,6 +23,12 @@ public class PriorityControllerV1Impl implements PriorityControllerV1{
     public List<Prioritised> findAll(){
         return svc.findAll();
     }
+
+    @GetMapping(FREE_WEIGHTS_PATH)
+    public List<Integer> findFreeWeights() {
+        return svc.findFreeWeights();
+    }
+
     @PostMapping()
     public ResponseEntity<SucessDTO> save(@RequestBody Prioritised request) throws Exception {
         return ResponseEntity.ok(svc.save(request));

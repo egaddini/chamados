@@ -10,26 +10,34 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class PriorityService {
 
     @Autowired
-    private PriorityRepository priorityRepo;
+    private PriorityRepository repository;
 
     public Prioritised findById(Integer id) throws RecordNotFound2Exception {
-        return priorityRepo.findById(id).orElseThrow(() -> new RecordNotFound2Exception("Prioridade"));
+        return repository.findById(id).orElseThrow(() -> new RecordNotFound2Exception("Prioridade"));
     }
 
     public SucessDTO save(Prioritised priority) throws Exception {
-        if (priorityRepo.existsByNome(priority.getNome())) throw new RegisterUser2Exception("Nome", priority.getNome());
-        priorityRepo.save(priority);
+        if (repository.existsByNome(priority.getNome())) throw new RegisterUser2Exception("Nome", priority.getNome());
+        repository.save(priority);
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
     public List<Prioritised> findAll() {
-        return priorityRepo.findAll();
+        return repository.findAll();
     }
+
+    public List<Integer> findFreeWeights() {
+        return Arrays.asList(1,2,3,4,5,6,7,8,9,10).stream().filter(i -> !repository.findAllBy().stream()
+                .map(j -> j.getWeight()).collect(Collectors.toList()).contains(i)).collect(Collectors.toList());
+    }
+
 }
