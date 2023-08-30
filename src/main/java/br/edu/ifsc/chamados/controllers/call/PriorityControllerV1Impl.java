@@ -34,5 +34,10 @@ public class PriorityControllerV1Impl implements PriorityControllerV1{
         return ResponseEntity.ok(svc.save(request));
     }
 
+    @DeleteMapping(ID_PATH)
+    public ResponseEntity<SucessDTO> delete(@PathVariable("id") Integer id) throws Exception {
+        return ResponseEntity.ok(svc.delete(id));
+    }
+
 
 }

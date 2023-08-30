@@ -40,4 +40,10 @@ public class PriorityService {
                 .map(j -> j.getWeight()).collect(Collectors.toList()).contains(i)).collect(Collectors.toList());
     }
 
+    public SucessDTO delete(Integer id) throws RegisterUser2Exception {
+        repository.deleteById(id);
+        return new SucessDTO("Solicitação realizada com sucesso.");
+    }
+
+
 }

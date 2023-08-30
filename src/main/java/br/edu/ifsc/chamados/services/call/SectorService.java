@@ -16,20 +16,25 @@ import java.util.List;
 public class SectorService {
 
     @Autowired
-    private SectorRepository setorRepository;
+    private SectorRepository repository;
 
     public Sector findById(Integer id) throws RecordNotFound2Exception {
-        return setorRepository.findById(id).orElseThrow(() -> new RecordNotFound2Exception("Setor"));
+        return repository.findById(id).orElseThrow(() -> new RecordNotFound2Exception("Setor"));
     }
 
     public SucessDTO save(Sector sector) throws Exception {
-        if (setorRepository.existsBySigla(sector.getSigla())) throw new RegisterUser2Exception("Sigla", sector.getSigla());
-        if (setorRepository.existsByNome(sector.getNome())) throw new RegisterUser2Exception("Nome", sector.getNome());
-        setorRepository.save(sector);
+        if (repository.existsBySigla(sector.getSigla())) throw new RegisterUser2Exception("Sigla", sector.getSigla());
+        if (repository.existsByNome(sector.getNome())) throw new RegisterUser2Exception("Nome", sector.getNome());
+        repository.save(sector);
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
     public List<Sector> findAll() {
-        return setorRepository.findAll();
+        return repository.findAll();
+    }
+
+    public SucessDTO delete(Integer id) throws RegisterUser2Exception {
+        repository.deleteById(id);
+        return new SucessDTO("Solicitação realizada com sucesso.");
     }
 }

@@ -36,16 +36,16 @@ public class CallService {
     @Autowired
     private StatusRepository statusRepository;
 
-    public List<CallResponse> findAll(Long id) {
+    public List<CallResponse> findAll(String email) {
 
         List<Call> calls = new ArrayList<>();
-        calls = (id == null) ? callRepo.findAll() : callRepo.findAllById(id);
+        calls = (email == null || email.isEmpty()) ? callRepo.findAll() : callRepo.findAllBySolicitante_email(email);
 
         return calls.stream().map(i ->
             new CallResponse(i.getId(), i.getDataCriacao(), i.getDataUltAtualizacao(), i.getStatus().getName(),
             new UserTinyResponse(i.getSolicitante().getId(), i.getSolicitante().getEmail()),
             null, i.getCallType(), i.getDescricao(), i.getHistorico())).collect(Collectors.toList());
-        }
+    }
 
 
     public SucessDTO register(CallRequest request) throws RecordNotFound2Exception {

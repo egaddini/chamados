@@ -15,27 +15,32 @@ import java.util.List;
 public class CallTypeService {
 
     @Autowired
-    private CallTypeRepository callTypeRepo;
+    private CallTypeRepository repository;
     @Autowired
     private SectorService setorSvc;
     @Autowired
     private PriorityService prioritySvc;
 
     public CallType findUserById(Integer id) throws RecordNotFound2Exception {
-        return callTypeRepo.findById(id).orElseThrow(() -> new RecordNotFound2Exception(id.toString()));
+        return repository.findById(id).orElseThrow(() -> new RecordNotFound2Exception(id.toString()));
     }
 
     public SucessDTO save(CallTypeRequest request) throws Exception {
 
-        if (callTypeRepo.existsByTitulo(request.getTitulo())) throw new RegisterUser2Exception("Titulo", request.getTitulo());
+        if (repository.existsByTitulo(request.getTitulo())) throw new RegisterUser2Exception("Titulo", request.getTitulo());
         if (request.getDescricao().isBlank()) throw new Exception("erro");
         CallType callType = new CallType(null, request.getTitulo(), setorSvc.findById(request.getSetorId()), prioritySvc.findById(request.getPrioridadeId()),request.getDescricao());
-        callTypeRepo.save(callType);
+        repository.save(callType);
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
     public List<CallType> findAll() {
-        return callTypeRepo.findAll();
+        return repository.findAll();
+    }
+
+    public SucessDTO delete(Integer id) throws RegisterUser2Exception {
+        repository.deleteById(id);
+        return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
 }
