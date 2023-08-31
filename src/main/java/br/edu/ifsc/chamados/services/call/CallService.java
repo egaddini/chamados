@@ -8,6 +8,7 @@ import br.edu.ifsc.chamados.models.call.CallType;
 import br.edu.ifsc.chamados.models.call.Historic;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.repositories.CallRepository;
+import br.edu.ifsc.chamados.repositories.HistoricRepository;
 import br.edu.ifsc.chamados.repositories.StatusRepository;
 import br.edu.ifsc.chamados.requests.CallRequest;
 import br.edu.ifsc.chamados.response.call.CallResponse;
@@ -29,6 +30,8 @@ public class CallService {
 
     @Autowired
     private CallRepository callRepo;
+    @Autowired
+    private HistoricRepository histRep;
     @Autowired
     private UserService userService;
     @Autowired
@@ -65,8 +68,11 @@ public class CallService {
         call.setCallType(callType);
 //        call.setCallParticipants(Arrays.asList(new CallParticipants(null, call, solicitante)));
         call.setDescricao(request.getDescricao());
-        call.setHistorico(Set.of(new Historic(null, LocalDateTime.now(), solicitante.getEmail(), "Iniciado o chamado", null)));
         callRepo.save(call);
+
+        Historic historic = new Historic(null, LocalDateTime.now(), solicitante.getEmail(), "Chamado Iniciado", call);
+        call.setHistorico(Arrays.asList(historic));
+        histRep.save(historic);
 
         return new SucessDTO("Solicitação realizada com sucesso.");
     }

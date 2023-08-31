@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -25,6 +26,6 @@ public class CallResponse {
     private UserTinyResponse responsavel;
     private CallType callType;
     private String descricao;
-    private Set<Historic> historico;
+    private List<Historic> historico;
 
 }

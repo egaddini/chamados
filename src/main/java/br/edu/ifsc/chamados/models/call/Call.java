@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -46,7 +47,7 @@ public class Call implements Serializable {
     @Column(nullable = false)
     private String descricao;
 
-    @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL, targetEntity = Historic.class)
-    private Set<Historic> historico;
+    @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Historic> historico;
 
 }
