@@ -1,7 +1,6 @@
 package br.edu.ifsc.chamados.models.call;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,21 +14,18 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "HISTORIC")
-public class Historic implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Table(name = "call_historic")
+public class CallHistoric implements Serializable {
+    public static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "OCURRENCE_DT")
+    @Column(name = "ocurrence_dt")
     private LocalDateTime ocurrenceDT;
-    @Column(name = "USER")
     private String user;
-    @Column(name = "MESSAGE")
     private String message;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "CALL_ID")
+    @JoinColumn(name = "call_id")
     private Call call;
 }

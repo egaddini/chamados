@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CallTypeRequest {
 
-    private String titulo;
-    private Integer setorId;
-    private Integer prioridadeId;
-    private String descricao;
+    private String title;
+    private Integer sectorId;
+    private Integer priorityId;
+    private String description;
 
 }

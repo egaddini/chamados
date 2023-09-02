@@ -22,13 +22,13 @@ public class AuthenticationResponse implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String email;
-    private String nome;
-    private String sobrenome;
-    private Long telefone;
+    private String firstName;
+    private String lastName;
+    private Long phone;
     @Enumerated(EnumType.STRING)
     private Role role;
     private String token;
-    private Boolean habilitado;
-    private LocalDateTime dataCriacao;
+    private Boolean active;
+    private LocalDateTime creationDT;
 
 }

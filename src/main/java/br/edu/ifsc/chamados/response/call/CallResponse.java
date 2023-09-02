@@ -1,14 +1,13 @@
 package br.edu.ifsc.chamados.response.call;
 
-import br.edu.ifsc.chamados.models.call.CallType;
-import br.edu.ifsc.chamados.models.call.Historic;
+import br.edu.ifsc.chamados.models.call.CallCategory;
+import br.edu.ifsc.chamados.models.call.CallHistoric;
 import br.edu.ifsc.chamados.response.user.UserTinyResponse;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -16,16 +15,16 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CallResponse {
-
-    private Long id;
-    private LocalDateTime dataCriacao;
-    private LocalDateTime dataUltAtualizacao;
+public class CallResponse implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    private LocalDateTime creationDT;
+    private LocalDateTime lastUpdateDT;
     private String status;
-    private UserTinyResponse solicitante;
-    private UserTinyResponse responsavel;
-    private CallType callType;
-    private String descricao;
-    private List<Historic> historico;
+    private UserTinyResponse requester;
+    private UserTinyResponse solver;
+    private CallCategory callCategory;
+    private String desciption;
+    private List<CallHistoric> historic;
 
 }

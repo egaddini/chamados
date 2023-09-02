@@ -3,7 +3,7 @@ package br.edu.ifsc.chamados.services.call;
 import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.call.Call;
-import br.edu.ifsc.chamados.models.call.CallType;
+import br.edu.ifsc.chamados.models.call.CallCategory;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.repositories.CallRepository;
 import br.edu.ifsc.chamados.repositories.StatusRepository;
@@ -37,11 +37,11 @@ public class CallService {
 
     public List<CallResponse> findAll(String email) {
         List<Call> calls = new ArrayList<>();
-        calls = (email == null || email.isEmpty()) ? repository.findAll() : repository.findAllBySolicitante_email(email);
+        calls = (email == null || email.isEmpty()) ? repository.findAll() : repository.findAllByRequester_email(email);
         return calls.stream().map(i ->
-            new CallResponse(i.getId(), i.getDataCriacao(), i.getDataUltAtualizacao(), i.getStatus().getName(),
-            new UserTinyResponse(i.getSolicitante().getId(), i.getSolicitante().getEmail()),
-            null, i.getCallType(), i.getDescricao(), i.getHistorico())).collect(Collectors.toList());
+            new CallResponse(i.getId(), i.getCreationDT(), i.getLastUpdateDT(), i.getStatus().getName(),
+            new UserTinyResponse(i.getRequester().getId(), i.getRequester().getEmail()),
+            null, i.getCallCategory(), i.getDescription(), i.getHistoric())).collect(Collectors.toList());
     }
     public Call findById(Integer id) throws RecordNotFound2Exception {
         return repository.findById(id).orElseThrow(() -> new RecordNotFound2Exception(id.toString()));
@@ -53,21 +53,21 @@ public class CallService {
 
     public SucessDTO register(CallRequest request) throws RecordNotFound2Exception {
         User solicitante = userService.findUserById(request.getSolicitante());
-        CallType callType = callTypeService.findUserById(request.getCallType());
+        CallCategory callType = callTypeService.findUserById(request.getCallType());
         LocalDateTime hora = LocalDateTime.now();
         String formatter = DateUtils.dateTime2StringFormatted(hora);
 
         Call call = new Call();
-        call.setDataCriacao(hora);
-        call.setDataUltAtualizacao(hora);
+        call.setCreationDT(hora);
+        call.setLastUpdateDT(hora);
         call.setStatus(statusRepository.findByWeight(1).orElseThrow(() ->  new RecordNotFound2Exception("1")));
-        call.setSolicitante(solicitante);
-        call.setResponsavel(null);
-        call.setCallType(callType);
+        call.setRequester(solicitante);
+        call.setSolver(null);
+        call.setCallCategory(callType);
 //        call.setCallParticipants(Arrays.asList(new CallParticipants(null, call, solicitante)));
-        call.setDescricao(request.getDescricao());
+        call.setDescription(request.getDescricao());
         repository.save(call);
-        call.setHistorico(Arrays.asList(historicService.saveHistoric(solicitante.getEmail(), "Chamado Iniciado", call)));
+        call.setHistoric(Arrays.asList(historicService.saveHistoric(solicitante.getEmail(), "Chamado Iniciado", call)));
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 

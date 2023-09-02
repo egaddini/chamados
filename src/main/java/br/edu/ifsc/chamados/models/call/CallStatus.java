@@ -12,22 +12,15 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "STATUS")
-public class Status implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+@Table(name = "call_satus")
+public class  CallStatus implements Serializable {
+    public static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "NAME")
     private String name;
-    @Column(name = "DESCRIPTION")
     private String description;
-    @Column(name = "WEIGHT")
     private Integer weight;
-    @Column(name = "NOTIFY")
     private boolean notify;
 
 }

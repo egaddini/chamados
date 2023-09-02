@@ -25,17 +25,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table(name = "`USER`")
 public class User implements UserDetails, IUser {
-
-    private static final long serialVersionUID = 1L;
-
+    public static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(unique = true, nullable = false)
+    @Column(name = "first_name",unique = true, nullable = false)
     private String firstname;
-    @Column(unique = true, nullable = false)
+    @Column(name = "last_name", unique = true, nullable = false)
     private String lastname;
     @Column(unique = true, nullable = false)
     private Long phone;
@@ -49,12 +47,10 @@ public class User implements UserDetails, IUser {
     private Boolean active = false;
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Token> tokens;
-    @Column(nullable = false)
-    private LocalDateTime dataCriacao;
-
+    @Column(name = "creation_dt", nullable = false)
+    private LocalDateTime creationDT;
 //    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
 //    private List<CallParticipants> callParticipants;
-
     @Version
     private Long timestamp;
 

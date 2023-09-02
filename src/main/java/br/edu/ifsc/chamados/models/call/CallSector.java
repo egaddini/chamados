@@ -12,16 +12,15 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "SECTOR")
-public class Sector implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Table(name = "call_sector")
+public class CallSector implements Serializable {
+    public static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "ACRONYM", unique = true, nullable = false, length = 3)
+    @Column(unique = true, nullable = false, length = 3)
     private String acronym;
-    @Column(name = "NAME" ,unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String name;
 
 }

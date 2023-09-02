@@ -1,6 +1,6 @@
 package br.edu.ifsc.chamados.controllers.call;
 
-import br.edu.ifsc.chamados.api.controllers.call.CallTypeControllerV1;
+import br.edu.ifsc.chamados.api.controllers.call.CallCategoryControllerV1;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.call.CallCategory;
 import br.edu.ifsc.chamados.requests.CallTypeRequest;
@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(CallTypeControllerV1.BASE_PATH)
-public class CallTypeControllerV1Impl implements CallTypeControllerV1 {
+@RequestMapping(CallCategoryControllerV1.BASE_PATH)
+public class CallCategoryControllerV1Impl implements CallCategoryControllerV1 {
 
     @Autowired
     private CallTypeService svc;

@@ -2,7 +2,7 @@ package br.edu.ifsc.chamados.controllers.call;
 
 import br.edu.ifsc.chamados.api.controllers.call.PriorityControllerV1;
 import br.edu.ifsc.chamados.dto.SucessDTO;
-import br.edu.ifsc.chamados.models.call.Prioritised;
+import br.edu.ifsc.chamados.models.call.CallPriority;
 import br.edu.ifsc.chamados.services.call.PriorityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class PriorityControllerV1Impl implements PriorityControllerV1{
     private PriorityService svc;
 
     @GetMapping
-    public List<Prioritised> findAll(){
+    public List<CallPriority> findAll(){
         return svc.findAll();
     }
 
@@ -30,7 +30,7 @@ public class PriorityControllerV1Impl implements PriorityControllerV1{
     }
 
     @PostMapping()
-    public ResponseEntity<SucessDTO> save(@RequestBody Prioritised request) throws Exception {
+    public ResponseEntity<SucessDTO> save(@RequestBody CallPriority request) throws Exception {
         return ResponseEntity.ok(svc.save(request));
     }
 

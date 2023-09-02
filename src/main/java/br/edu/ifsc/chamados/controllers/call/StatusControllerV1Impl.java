@@ -3,7 +3,7 @@ package br.edu.ifsc.chamados.controllers.call;
 import br.edu.ifsc.chamados.api.controllers.call.StatusControllerV1;
 import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
-import br.edu.ifsc.chamados.models.call.Status;
+import br.edu.ifsc.chamados.models.call.CallStatus;
 import br.edu.ifsc.chamados.requests.StatusRequest;
 import br.edu.ifsc.chamados.services.call.StatusService;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +22,11 @@ public class StatusControllerV1Impl implements StatusControllerV1 {
     private StatusService service;
 
     @GetMapping
-    public List<Status> findAll(){return service.findAll();
+    public List<CallStatus> findAll(){return service.findAll();
     }
 
     @GetMapping(NAME_PATH)
-    public Status findByName(@RequestParam String name) throws RecordNotFound2Exception {
+    public CallStatus findByName(@RequestParam String name) throws RecordNotFound2Exception {
         return service.findByName(name);
     }
 
@@ -46,12 +46,12 @@ public class StatusControllerV1Impl implements StatusControllerV1 {
     }
 
     @GetMapping(ID_PATH)
-    public Status findById(@PathVariable("id") Long id) throws Exception {
+    public CallStatus findById(@PathVariable("id") Long id) throws Exception {
         return service.findById(id);
     }
 
     @GetMapping(CHANGE_PATH)
-    public Status setStatus(@PathVariable("id") Integer id, @RequestParam("status") Integer status) throws Exception {
+    public CallStatus setStatus(@PathVariable("id") Integer id, @RequestParam("status") Integer status) throws Exception {
         return service.setStatus(id, status);
     }
 

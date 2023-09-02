@@ -2,7 +2,7 @@ package br.edu.ifsc.chamados.controllers.call;
 
 import br.edu.ifsc.chamados.api.controllers.call.SectorControllerV1;
 import br.edu.ifsc.chamados.dto.SucessDTO;
-import br.edu.ifsc.chamados.models.call.Sector;
+import br.edu.ifsc.chamados.models.call.CallSector;
 import br.edu.ifsc.chamados.services.call.SectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,13 @@ public class SectorControllerV1Impl implements SectorControllerV1 {
     private SectorService svc;
 
     @GetMapping
-    public List<Sector> findAll(){
+    public List<CallSector> findAll(){
         return svc.findAll();
     }
 
 
     @PostMapping()
-    public ResponseEntity<SucessDTO> save(@RequestBody Sector request) throws Exception {
+    public ResponseEntity<SucessDTO> save(@RequestBody CallSector request) throws Exception {
         return ResponseEntity.ok(svc.save(request));
     }
 

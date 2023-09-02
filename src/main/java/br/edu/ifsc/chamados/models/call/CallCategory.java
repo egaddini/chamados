@@ -13,24 +13,21 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CALL_CATEGORY")
-public class CallCategory  implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+@Table(name = "call_category")
+public class CallCategory implements Serializable {
+    public static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "TITLE", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String title;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "SECTOR_ID")
-    private Sector sector;
+    @JoinColumn(name = "sector_id")
+    private CallSector sector;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "PRIORITY_ID")
-    private Priority priority;
-    @Column(name = "DESCRIPTION", unique = true, nullable = false)
+    @JoinColumn(name = "priority_id")
+    private CallPriority priority;
+    @Column(unique = true, nullable = false)
     private String description;
 
 }

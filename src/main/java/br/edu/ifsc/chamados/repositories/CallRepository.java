@@ -10,6 +10,6 @@ import java.util.stream.Stream;
 @Repository
 public interface CallRepository extends JpaRepository<Call, Integer> {
     List<Call> findAllById(Long id);
-    List<Call> findAllBySolicitante_email(String email);
+    List<Call> findAllByRequester_email(String email);
 
 }

@@ -42,10 +42,7 @@ public class AuthenticationService {
         var user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new UnauthorizedException());
 
         authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                request.getEmail(),
-                request.getPassword()
-            )
+            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         repository.findByEmailAndActiveIs(request.getEmail(), true).orElseThrow(() -> new InactiveUser2Exception(request.getEmail()));
@@ -83,14 +80,14 @@ public class AuthenticationService {
     private AuthenticationResponse buildAuthResponse(User user, String token) {
         return AuthenticationResponse.builder()
             .id(user.getId())
-            .nome(user.getFirstname())
-            .sobrenome(user.getLastname())
+            .firstName(user.getFirstname())
+            .lastName(user.getLastname())
             .email(user.getEmail())
             .role(user.getRole())
             .token(token)
-            .habilitado(user.getActive())
-            .dataCriacao(user.getDataCriacao())
-            .telefone(user.getPhone())
+            .active(user.getActive())
+            .creationDT(user.getCreationDT())
+            .phone(user.getPhone())
             .build();
     }
 

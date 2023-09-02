@@ -31,7 +31,7 @@ public class UserService implements IUserService {
     @Override
     public List<UserResponse> findUsers() {
         List<User> users = repository.findAll();
-        return users.stream().map(i -> new UserResponse(i.getId(), i.getEmail(), i.getFirstname(), i.getLastname(), i.getPhone(), i.getRole(), null, i.getActive(), i.getDataCriacao())).collect(Collectors.toList());
+        return users.stream().map(i -> new UserResponse(i.getId(), i.getEmail(), i.getFirstname(), i.getLastname(), i.getPhone(), i.getRole(), null, i.getActive(), i.getCreationDT())).collect(Collectors.toList());
     }
     @Override
     public User saveUser(RegisterRequest request) throws Exception {
@@ -48,7 +48,7 @@ public class UserService implements IUserService {
             .role(Role.USER)
             .phone(request.getPhone())
             .active(false)
-            .dataCriacao(LocalDateTime.now())
+            .creationDT(LocalDateTime.now())
             .build());
     }
     @Override
@@ -77,7 +77,7 @@ public class UserService implements IUserService {
 
         if (isChanged) repository.save(user);
 
-        return new UserResponse(user.getId(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getPhone(), user.getRole(), null, user.getActive(), user.getDataCriacao());
+        return new UserResponse(user.getId(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getPhone(), user.getRole(), null, user.getActive(), user.getCreationDT());
     }
     @Override
     public void deleteUser(Integer id) throws RecordNotFound2Exception {

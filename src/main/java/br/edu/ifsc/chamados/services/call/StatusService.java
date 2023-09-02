@@ -4,8 +4,8 @@ import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.call.Call;
-import br.edu.ifsc.chamados.models.call.Historic;
-import br.edu.ifsc.chamados.models.call.Status;
+import br.edu.ifsc.chamados.models.call.CallHistoric;
+import br.edu.ifsc.chamados.models.call.CallStatus;
 import br.edu.ifsc.chamados.repositories.StatusRepository;
 import br.edu.ifsc.chamados.requests.StatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +26,26 @@ public class StatusService {
     @Autowired
     private HistoricService historicService;
 
-    public List<Status> findAll() {
+    public List<CallStatus> findAll() {
         return repository.findAll();
     }
 
-    public Status findById(Long id) throws RecordNotFound2Exception {
+    public CallStatus findById(Long id) throws RecordNotFound2Exception {
         return repository.findById(id).orElseThrow(() -> new RecordNotFound2Exception(id.toString()));
     }
 
-    public Status findByName(String name) throws RecordNotFound2Exception {
+    public CallStatus findByName(String name) throws RecordNotFound2Exception {
         return repository.findByName(name).orElseThrow(() -> new RecordNotFound2Exception(name.toString()));
     }
 
-    public Status findByWeight(Integer weight) throws RecordNotFound2Exception {
+    public CallStatus findByWeight(Integer weight) throws RecordNotFound2Exception {
         return repository.findByWeight(weight).orElseThrow(() -> new RecordNotFound2Exception(weight.toString()));
     }
 
     public SucessDTO save(StatusRequest request) throws RegisterUser2Exception {
         if (repository.existsByName(request.getName())) throw new RegisterUser2Exception("Nome", request.getName());
         if (repository.existsByWeight(request.getWeight())) throw new RegisterUser2Exception("Nome", request.getName());
-        repository.save(new Status(null, request.getName(), request.getDescription(), request.getWeight(), request.isNotify()));
+        repository.save(new CallStatus(null, request.getName(), request.getDescription(), request.getWeight(), request.isNotify()));
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
@@ -58,16 +58,16 @@ public class StatusService {
              .map(j -> j.getWeight()).collect(Collectors.toList()).contains(i)).collect(Collectors.toList());
     }
 
-    public Status setStatus(Integer callID, Integer statusID) throws RecordNotFound2Exception {
+    public CallStatus setStatus(Integer callID, Integer statusID) throws RecordNotFound2Exception {
         Call call = callService.findById(callID);
-        Status status = findByWeight(statusID);
+        CallStatus status = findByWeight(statusID);
         String message = (statusID == 10) ? "Encerrou o chamado" : String.format("Alterou o status de %s para %s", call.getStatus().getName(), status.getName());
-        Historic historic = historicService.saveHistoric((statusID == 10) ? call.getSolicitante().getEmail() : "Responsável", message, call);
-        List<Historic> savedHistoric = call.getHistorico();
+        CallHistoric historic = historicService.saveHistoric((statusID == 10) ? call.getRequester().getEmail() : "Responsável", message, call);
+        List<CallHistoric> savedHistoric = call.getHistoric();
         savedHistoric.add(historic);
-        call.setHistorico(savedHistoric);
+        call.setHistoric(savedHistoric);
         call.setStatus(status);
-        call.setDataUltAtualizacao(LocalDateTime.now());
+        call.setLastUpdateDT(LocalDateTime.now());
         callService.register(call);
         return status;
     }

@@ -16,36 +16,33 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CALL")
+@Table(name = "`CALL`")
 public class Call implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
+    public static final long serialVersionUID = 1L;
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "CREATION_DT", nullable = false)
+    private Integer id;
+    @Column(name = "creation_dt", nullable = false)
     private LocalDateTime creationDT;
-    @Column(name = "LAST_UPDATE_DT", nullable = false)
+    @Column(name = "last_update_dt", nullable = false)
     private LocalDateTime lastUpdateDT;
-    @JoinColumn(name = "STATUS_ID")
+    @JoinColumn(name = "status_id")
     @OneToOne(cascade = CascadeType.ALL)
-    private Status status;
-    @JoinColumn(name = "REQUESTER_ID")
+    private CallStatus status;
+    @JoinColumn(name = "requester_id")
     @OneToOne(cascade = CascadeType.ALL)
     private User requester;
-    @JoinColumn(name = "SOLVER_ID")
+    @JoinColumn(name = "solver_id")
     @OneToOne(cascade = CascadeType.ALL)
     private User solver;
-    @JoinColumn(name = "CALL_CATEGORY_ID")
+    @JoinColumn(name = "call_category_id")
     @OneToOne(cascade = CascadeType.ALL)
     private CallCategory callCategory;
 //    @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
 //    private List<CallParticipants> callParticipants;
-    @Column(name = "DESCRIPTION", nullable = false)
+    @Column(nullable = false)
     private String description;
     @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Historic> historico;
+    private List<CallHistoric> historic;
 
 }
