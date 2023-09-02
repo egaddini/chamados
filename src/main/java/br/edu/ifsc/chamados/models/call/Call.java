@@ -9,44 +9,42 @@ import lombok.AllArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "_call")
+@Table(name = "CALL")
 public class Call implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    private LocalDateTime dataCriacao;
-    @Column(nullable = false)
-    private LocalDateTime dataUltAtualizacao;
-    @JoinColumn(name = "status_id")
+    @Column(name = "CREATION_DT", nullable = false)
+    private LocalDateTime creationDT;
+    @Column(name = "LAST_UPDATE_DT", nullable = false)
+    private LocalDateTime lastUpdateDT;
+    @JoinColumn(name = "STATUS_ID")
     @OneToOne(cascade = CascadeType.ALL)
     private Status status;
-    @JoinColumn(name = "solicitante_id")
+    @JoinColumn(name = "REQUESTER_ID")
     @OneToOne(cascade = CascadeType.ALL)
-    private User solicitante;
-    @JoinColumn(name = "responsavel_id")
+    private User requester;
+    @JoinColumn(name = "SOLVER_ID")
     @OneToOne(cascade = CascadeType.ALL)
-    private User responsavel;
-    @JoinColumn(name = "call_type_id")
+    private User solver;
+    @JoinColumn(name = "CALL_CATEGORY_ID")
     @OneToOne(cascade = CascadeType.ALL)
-    private CallType callType;
+    private CallCategory callCategory;
 //    @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
 //    private List<CallParticipants> callParticipants;
-    @Column(nullable = false)
-    private String descricao;
-
+    @Column(name = "DESCRIPTION", nullable = false)
+    private String description;
     @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Historic> historico;
 

@@ -15,16 +15,21 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Historic {
-
+@Table(name = "HISTORIC")
+public class Historic implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private LocalDateTime dateTime;
+    @Column(name = "OCURRENCE_DT")
+    private LocalDateTime ocurrenceDT;
+    @Column(name = "USER")
     private String user;
+    @Column(name = "MESSAGE")
     private String message;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "call_id")
+    @JoinColumn(name = "CALL_ID")
     private Call call;
 }

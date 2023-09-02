@@ -3,14 +3,15 @@ package br.edu.ifsc.chamados.services.call;
 import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
-import br.edu.ifsc.chamados.models.call.Sector;
+import br.edu.ifsc.chamados.models.call.Call;
+import br.edu.ifsc.chamados.models.call.Historic;
 import br.edu.ifsc.chamados.models.call.Status;
 import br.edu.ifsc.chamados.repositories.StatusRepository;
 import br.edu.ifsc.chamados.requests.StatusRequest;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,10 @@ public class StatusService {
 
     @Autowired
     private StatusRepository repository;
+    @Autowired
+    private CallService callService;
+    @Autowired
+    private HistoricService historicService;
 
     public List<Status> findAll() {
         return repository.findAll();
@@ -31,6 +36,10 @@ public class StatusService {
 
     public Status findByName(String name) throws RecordNotFound2Exception {
         return repository.findByName(name).orElseThrow(() -> new RecordNotFound2Exception(name.toString()));
+    }
+
+    public Status findByWeight(Integer weight) throws RecordNotFound2Exception {
+        return repository.findByWeight(weight).orElseThrow(() -> new RecordNotFound2Exception(weight.toString()));
     }
 
     public SucessDTO save(StatusRequest request) throws RegisterUser2Exception {
@@ -46,8 +55,21 @@ public class StatusService {
     }
     public List<Integer> findFreeWeights() {
         return Arrays.asList(1,2,3,4,5,6,7,8,9,10).stream().filter(i -> !repository.findAllBy().stream()
-                     .map(j -> j.getWeight()).collect(Collectors.toList()).contains(i)).collect(Collectors.toList());
+             .map(j -> j.getWeight()).collect(Collectors.toList()).contains(i)).collect(Collectors.toList());
     }
 
+    public Status setStatus(Integer callID, Integer statusID) throws RecordNotFound2Exception {
+        Call call = callService.findById(callID);
+        Status status = findByWeight(statusID);
+        String message = (statusID == 10) ? "Encerrou o chamado" : String.format("Alterou o status de %s para %s", call.getStatus().getName(), status.getName());
+        Historic historic = historicService.saveHistoric((statusID == 10) ? call.getSolicitante().getEmail() : "Responsável", message, call);
+        List<Historic> savedHistoric = call.getHistorico();
+        savedHistoric.add(historic);
+        call.setHistorico(savedHistoric);
+        call.setStatus(status);
+        call.setDataUltAtualizacao(LocalDateTime.now());
+        callService.register(call);
+        return status;
+    }
 
 }

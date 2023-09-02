@@ -1,9 +1,6 @@
 package br.edu.ifsc.chamados.models.call;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,13 +12,16 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Prioritised implements Serializable {
-
+@Table(name = "PRIORITY")
+public class Priority implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
+    @Column(name = "NAME")
+    private String name;
+    @Column(name = "WEIGHT")
     private Integer weight;
 
 }
