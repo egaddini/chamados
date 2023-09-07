@@ -1,65 +1,72 @@
 package br.edu.ifsc.chamados.models.user;
 
-import br.edu.ifsc.chamados.models.Role;
-import jdk.jfr.Timespan;
-import jdk.jfr.Timestamp;
+import br.edu.ifsc.chamados.api.models.user.IUser;
+import br.edu.ifsc.chamados.enums.Role;
+import br.edu.ifsc.chamados.models.auth.Token;
+import br.edu.ifsc.chamados.models.call.Call;
+//import br.edu.ifsc.chamados.models.call.CallParticipants;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
 @Data
-@Entity
-@Builder()
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
-public class User implements UserDetails, Serializable {
-
-    public static final Long serialVersionUID = 1L;
-
+@Entity
+@Table(name = "`USER`")
+public class User implements UserDetails, IUser {
+    public static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer userId;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String surname;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Column(name = "first_name",unique = true, nullable = false)
+    private String firstname;
+    @Column(name = "last_name", unique = true, nullable = false)
+    private String lastname;
     @Column(unique = true, nullable = false)
-    private String username;
-
+    private Long phone;
     @Column(unique = true, nullable = false)
     private String email;
-
-    private String phone;
-
-    @Column(nullable = false)
+    @Column(unique = true, nullable = false)
     private String password;
-
-    @Timestamp
-    private long timestamp;
-
-    @ManyToMany
-    @JoinTable(name = "user_role",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<Role> roles;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @Column(nullable = false)
+    private Boolean active = false;
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Token> tokens;
+    @Column(name = "creation_dt", nullable = false)
+    private LocalDateTime creationDT;
+//    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+//    private List<CallParticipants> callParticipants;
+    @Version
+    private Long timestamp;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
@@ -81,5 +88,4 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
-
 }
