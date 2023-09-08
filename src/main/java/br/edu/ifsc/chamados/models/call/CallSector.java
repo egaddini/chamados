@@ -1,12 +1,14 @@
 package br.edu.ifsc.chamados.models.call;
 
+import br.edu.ifsc.chamados.models.user.User;
+import br.edu.ifsc.chamados.models.user.UserSector;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
+import java.util.Set;
+
 @Data
 @Entity
 @Builder
@@ -22,5 +24,8 @@ public class CallSector implements Serializable {
     private String acronym;
     @Column(unique = true, nullable = false)
     private String name;
+    @JsonIgnore
+    @OneToMany(mappedBy = "sector", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<UserSector> userSector;
 
 }

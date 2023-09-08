@@ -3,19 +3,16 @@ package br.edu.ifsc.chamados.models.user;
 import br.edu.ifsc.chamados.api.models.user.IUser;
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.models.auth.Token;
-import br.edu.ifsc.chamados.models.call.Call;
-//import br.edu.ifsc.chamados.models.call.CallParticipants;
+import br.edu.ifsc.chamados.models.call.CallSector;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,6 +48,10 @@ public class User implements UserDetails, IUser {
     private LocalDateTime creationDT;
 //    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
 //    private List<CallParticipants> callParticipants;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<UserSector> userSector;
+
     @Version
     private Long timestamp;
 
@@ -87,5 +88,9 @@ public class User implements UserDetails, IUser {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Set<CallSector> getUserSector() {
+        return userSector.stream().map(e -> e.getSector()).collect(Collectors.toSet());
     }
 }

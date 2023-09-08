@@ -7,18 +7,26 @@ import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.enums.Role;
+import br.edu.ifsc.chamados.models.call.Call;
+import br.edu.ifsc.chamados.models.call.CallSector;
 import br.edu.ifsc.chamados.models.user.User;
+import br.edu.ifsc.chamados.models.user.UserSector;
 import br.edu.ifsc.chamados.repositories.UserRepository;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.user.UserResponse;
+import br.edu.ifsc.chamados.services.call.SectorService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,11 +35,20 @@ import java.util.stream.Collectors;
 public class UserService implements IUserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private SectorService sectorService;
+    @Autowired
+    private UserSectorService userSectorService;
 
     @Override
     public List<UserResponse> findUsers() {
         List<User> users = repository.findAll();
-        return users.stream().map(i -> new UserResponse(i.getId(), i.getEmail(), i.getFirstname(), i.getLastname(), i.getPhone(), i.getRole(), null, i.getActive(), i.getCreationDT())).collect(Collectors.toList());
+        List<UserResponse> response = new ArrayList<>();
+        for (User user: users) {
+            response.add(new UserResponse(user.getId(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getPhone(),
+                    user.getRole(), null, user.getActive(), user.getCreationDT(), user.getUserSector()));
+        }
+        return response;
     }
     @Override
     public User saveUser(RegisterRequest request) throws Exception {
@@ -51,33 +68,42 @@ public class UserService implements IUserService {
             .creationDT(LocalDateTime.now())
             .build());
     }
+    @Transactional()
     @Override
     public UserResponse updateUser(RegisterRequest userUpdt, Integer id) throws DefaultException {
 
         User user = findUserById(id);
         boolean isChanged = false;
 
-        if (!user.getEmail().equals(userUpdt.getEmail())) {
+        if (userUpdt.getEmail().isBlank() && !user.getEmail().equals(userUpdt.getEmail())) {
             user.setEmail(userUpdt.getEmail());
             validEmail(userUpdt.getEmail());
             isChanged = true;
         }
-        if (!user.getFirstname().equals(userUpdt.getFirstname())) {
+        if (!userUpdt.getFirstname().isBlank() && !user.getFirstname().equals(userUpdt.getFirstname())) {
             user.setFirstname(userUpdt.getFirstname());
             isChanged = true;
         }
-        if (!user.getLastname().equals(userUpdt.getLastname())) {
+        if (!userUpdt.getLastname().isBlank() && !user.getLastname().equals(userUpdt.getLastname())) {
             user.setLastname(userUpdt.getLastname());
             isChanged = true;
         }
-        if (!user.getPassword().equals(passwordEncoder.encode(userUpdt.getPassword()))) {
+        if (!userUpdt.getPassword().isBlank() && !user.getPassword().equals(passwordEncoder.encode(userUpdt.getPassword()))) {
             user.setPassword(passwordEncoder.encode(userUpdt.getPassword()));
             isChanged = true;
         }
-
+        if (!user.getUserSector().equals(userUpdt.getSectors())) {
+            user.setUserSector(null);
+            repository.saveAndFlush(user);
+            userSectorService.removeUserSector(user.getId());
+            Set<CallSector> sectors = sectorService.getByIds(userUpdt.getSectors().stream().map(e -> e.getId()).collect(Collectors.toList()));
+            Set<UserSector> userSectors = sectors.stream().map(e -> new UserSector(null, user, e)).collect(Collectors.toSet());
+            user.setUserSector(userSectors);
+            isChanged = true;
+        }
         if (isChanged) repository.save(user);
 
-        return new UserResponse(user.getId(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getPhone(), user.getRole(), null, user.getActive(), user.getCreationDT());
+        return new UserResponse(user.getId(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getPhone(), user.getRole(), null, user.getActive(), user.getCreationDT(), user.getUserSector());
     }
     @Override
     public void deleteUser(Integer id) throws RecordNotFound2Exception {

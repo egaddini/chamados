@@ -2,15 +2,16 @@ package br.edu.ifsc.chamados.response.user;
 
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.models.auth.Token;
+import br.edu.ifsc.chamados.models.call.CallSector;
 import br.edu.ifsc.chamados.models.user.User;
+import br.edu.ifsc.chamados.models.user.UserSector;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -28,5 +29,6 @@ public class UserResponse {
     private String token;
     private Boolean active;
     private LocalDateTime creationDT;
+    private Set<CallSector> sectors;
 
 }

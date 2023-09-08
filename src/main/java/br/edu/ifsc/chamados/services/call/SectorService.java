@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -37,4 +39,9 @@ public class SectorService {
         repository.deleteById(id);
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
+
+    public Set<CallSector> getByIds(List<Integer> ids) {
+        return repository.findAllById(ids).stream().collect(Collectors.toSet());
+    }
+
 }
