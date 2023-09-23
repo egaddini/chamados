@@ -45,7 +45,7 @@ public class StatusService {
     public SucessDTO save(StatusRequest request) throws RegisterUser2Exception {
         if (repository.existsByName(request.getName())) throw new RegisterUser2Exception("Nome", request.getName());
         if (repository.existsByWeight(request.getWeight())) throw new RegisterUser2Exception("Nome", request.getName());
-        repository.save(new CallStatus(null, request.getName(), request.getDescription(), request.getWeight(), request.isNotify()));
+        repository.save(new CallStatus(null, request.getName(), request.getDescription(), request.getWeight(), request.isNotify(), null));
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 

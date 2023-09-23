@@ -1,5 +1,6 @@
 package br.edu.ifsc.chamados.models.call;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
+
 @Data
 @Entity
 @Builder
@@ -20,5 +23,7 @@ public class CallPriority implements Serializable {
     private Integer id;
     private String name;
     private Integer weight;
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "priority", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<CallCategory> callCategories;
 }

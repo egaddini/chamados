@@ -27,19 +27,17 @@ public class Call implements Serializable {
     @Column(name = "last_update_dt", nullable = false)
     private LocalDateTime lastUpdateDT;
     @JoinColumn(name = "status_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private CallStatus status;
     @JoinColumn(name = "requester_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User requester;
     @JoinColumn(name = "solver_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private User solver;
     @JoinColumn(name = "call_category_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private CallCategory callCategory;
-//    @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
-//    private List<CallParticipants> callParticipants;
     @Column(nullable = false)
     private String description;
     @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)

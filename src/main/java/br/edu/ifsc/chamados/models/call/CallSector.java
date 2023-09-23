@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -27,5 +28,9 @@ public class CallSector implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "sector", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<UserSector> userSector;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "sector", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<CallCategory> callCategories;
 
 }

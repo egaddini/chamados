@@ -3,7 +3,9 @@ package br.edu.ifsc.chamados.models.user;
 import br.edu.ifsc.chamados.api.models.user.IUser;
 import br.edu.ifsc.chamados.enums.Role;
 import br.edu.ifsc.chamados.models.auth.Token;
+import br.edu.ifsc.chamados.models.call.Call;
 import br.edu.ifsc.chamados.models.call.CallSector;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -54,6 +56,15 @@ public class User implements UserDetails, IUser {
 
     @Version
     private Long timestamp;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "solver", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Call> solverCalls;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "requester", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Call> requesterCalls;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
