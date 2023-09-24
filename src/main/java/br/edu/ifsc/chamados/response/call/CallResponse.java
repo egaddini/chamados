@@ -24,7 +24,7 @@ public class CallResponse implements Serializable {
     private UserTinyResponse requester;
     private UserTinyResponse solver;
     private CallCategory callCategory;
-    private String desciption;
+    private String description;
     private List<CallHistoric> historic;
 
 }
