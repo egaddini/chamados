@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface AuthenticationControllerV1 {
 
-    public static final String BASE_PATH = "/api/v1/auth";
+    public static final String BASE_PATH = "api/auth/v1";
     public static final String REGISTER_PATH = "/register";
     public static final String AUTHENTICATE_PATH = "/authenticate";
 
