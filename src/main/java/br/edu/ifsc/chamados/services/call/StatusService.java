@@ -62,6 +62,8 @@ public class StatusService {
         Call call = callService.findById(callID);
         CallStatus status = findByWeight(statusID);
         String message = (statusID == 10) ? "Encerrou o chamado" : String.format("Alterou o status de %s para %s", call.getStatus().getName(), status.getName());
+        if (statusID == 9) message = "Cancelou o chamado";
+
         CallHistoric historic = historicService.saveHistoric((statusID == 10) ? call.getRequester().getEmail() : "Responsável", message, call);
         List<CallHistoric> savedHistoric = call.getHistoric();
         savedHistoric.add(historic);

@@ -29,6 +29,11 @@ public class CallControllerV1Impl implements CallControllerV1 {
         return service.findAll(email);
     }
 
+    @GetMapping("/{id}")
+    public CallResponse findAllByEmail(@PathVariable("id") Integer id) throws Exception {
+        return service.responseFindById(id);
+    }
+
     @PostMapping()
     public ResponseEntity<SucessDTO> register(@RequestBody CallRequest request) throws Exception {
         return ResponseEntity.ok(service.register(request));

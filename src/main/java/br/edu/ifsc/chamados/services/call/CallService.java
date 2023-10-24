@@ -47,6 +47,13 @@ public class CallService {
         return repository.findById(id).orElseThrow(() -> new RecordNotFound2Exception(id.toString()));
     }
 
+    public CallResponse responseFindById(Integer id) throws RecordNotFound2Exception {
+        Call call = findById(id);
+        return new CallResponse(call.getId(), call.getCreationDT(), call.getLastUpdateDT(), call.getStatus().getName(),
+                new UserTinyResponse(call.getRequester().getId(), call.getRequester().getEmail()),
+                null, call.getCallCategory(), call.getDescription(), call.getHistoric());
+    }
+
     public Call register(Call call) {
         return repository.save(call);
     }
