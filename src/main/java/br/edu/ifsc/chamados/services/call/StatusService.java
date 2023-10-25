@@ -45,7 +45,7 @@ public class StatusService {
     public SucessDTO save(StatusRequest request) throws RegisterUser2Exception {
         if (repository.existsByName(request.getName())) throw new RegisterUser2Exception("Nome", request.getName());
         if (repository.existsByWeight(request.getWeight())) throw new RegisterUser2Exception("Nome", request.getName());
-        repository.save(new CallStatus(null, request.getName(), request.getDescription(), request.getWeight(), request.isNotify()));
+        repository.save(new CallStatus(null, request.getName(), request.getDescription(), request.getWeight(), request.isNotify(), null));
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
@@ -62,6 +62,8 @@ public class StatusService {
         Call call = callService.findById(callID);
         CallStatus status = findByWeight(statusID);
         String message = (statusID == 10) ? "Encerrou o chamado" : String.format("Alterou o status de %s para %s", call.getStatus().getName(), status.getName());
+        if (statusID == 9) message = "Cancelou o chamado";
+
         CallHistoric historic = historicService.saveHistoric((statusID == 10) ? call.getRequester().getEmail() : "Responsável", message, call);
         List<CallHistoric> savedHistoric = call.getHistoric();
         savedHistoric.add(historic);

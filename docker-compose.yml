@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - "9090:9090"
+    environment:
+      DB_HOST: mysqldb
+      DB_NAME: chamados
+      DB_USER: root
+      DB_PASSWORD: root
+      SV_PORT: 9090
+    depends_on:
+      - mysqldb
+    volumes:
+      - ./target/chamados.jar:/chamados.jar
+    networks:
+      - mynetwork
+
+  mysqldb:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: chamados
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: not
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:

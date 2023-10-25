@@ -1,5 +1,6 @@
 package br.edu.ifsc.chamados.models.call;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -19,15 +21,18 @@ public class CallCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String title;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "sector_id")
     private CallSector sector;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "priority_id")
     private CallPriority priority;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String description;
+    @JsonIgnore
+    @OneToMany(mappedBy = "callCategory", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Call> calls;
 
 }

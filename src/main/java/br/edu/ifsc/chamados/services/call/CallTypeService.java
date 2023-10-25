@@ -29,7 +29,7 @@ public class CallTypeService {
 
         if (repository.existsByTitle(request.getTitle())) throw new RegisterUser2Exception("Titulo", request.getTitle());
         if (request.getDescription().isBlank()) throw new Exception("erro");
-        CallCategory callType = new CallCategory(null, request.getTitle(), setorSvc.findById(request.getSectorId()), prioritySvc.findById(request.getPriorityId()),request.getDescription());
+        CallCategory callType = new CallCategory(null, request.getTitle(), setorSvc.findById(request.getSectorId()), prioritySvc.findById(request.getPriorityId()),request.getDescription(), null);
         repository.save(callType);
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
