@@ -38,6 +38,7 @@ public class User implements UserDetails, IUser {
     private Long phone;
     @Column(unique = true, nullable = false)
     private String email;
+    public static final String EMAIL = "email";
     @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)

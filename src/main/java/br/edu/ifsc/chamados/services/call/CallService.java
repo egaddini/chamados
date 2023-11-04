@@ -8,9 +8,11 @@ import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.repositories.CallRepository;
 import br.edu.ifsc.chamados.repositories.StatusRepository;
 import br.edu.ifsc.chamados.requests.CallRequest;
+import br.edu.ifsc.chamados.requests.CallRequestFilter;
 import br.edu.ifsc.chamados.response.call.CallResponse;
 import br.edu.ifsc.chamados.response.user.UserTinyResponse;
 import br.edu.ifsc.chamados.services.user.UserService;
+import br.edu.ifsc.chamados.specifications.CallFilterSpecification;
 import br.edu.ifsc.chamados.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,9 +37,18 @@ public class CallService {
     @Autowired
     private HistoricService historicService;
 
-    public List<CallResponse> findAll(String email) {
+    public List<CallResponse> findAllFiltered(CallRequestFilter filter) {
+        return repository.findAll(new CallFilterSpecification(filter)).stream().map(i ->
+            new CallResponse(i.getId(), i.getCreationDT(), i.getLastUpdateDT(), i.getStatus().getName(),
+            new UserTinyResponse(i.getRequester().getId(), i.getRequester().getEmail()),
+            null, i.getCallCategory(), i.getDescription(), i.getHistoric())).collect(Collectors.toList());
+
+    }
+    public List<CallResponse> findAll(String email, Boolean isSolver) {
         List<Call> calls = new ArrayList<>();
-        calls = (email == null || email.isEmpty()) ? repository.findAll() : repository.findAllByRequester_email(email);
+
+        calls = (!isSolver && (!email.isEmpty())) ? repository.findAll() : repository.findAllByRequester_email(email);
+        calls = (isSolver && (!email.isEmpty())) ? repository.findAll() : repository.findAllBySolver_email(email);
         return calls.stream().map(i ->
             new CallResponse(i.getId(), i.getCreationDT(), i.getLastUpdateDT(), i.getStatus().getName(),
             new UserTinyResponse(i.getRequester().getId(), i.getRequester().getEmail()),

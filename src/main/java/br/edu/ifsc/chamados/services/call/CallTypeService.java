@@ -5,7 +5,9 @@ import br.edu.ifsc.chamados.configs.exceptions.RegisterUser2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.call.CallCategory;
 import br.edu.ifsc.chamados.repositories.CallCategoryRepository;
+import br.edu.ifsc.chamados.requests.CallCategoryFilter;
 import br.edu.ifsc.chamados.requests.CallTypeRequest;
+import br.edu.ifsc.chamados.specifications.CallCategorySpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +36,8 @@ public class CallTypeService {
         return new SucessDTO("Solicitação realizada com sucesso.");
     }
 
-    public List<CallCategory> findAll() {
-        return repository.findAll();
+    public List<CallCategory> findAll(CallCategoryFilter filter) {
+        return repository.findAll(new CallCategorySpecification(filter));
     }
 
     public SucessDTO delete(Integer id) throws RegisterUser2Exception {

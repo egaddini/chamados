@@ -21,8 +21,10 @@ public class CallPriority implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    public static final String ID = "id";
     private String name;
     private Integer weight;
+    public static final String WEIGHT = "weight";
     @JsonIgnore
     @OneToMany(mappedBy = "priority", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<CallCategory> callCategories;

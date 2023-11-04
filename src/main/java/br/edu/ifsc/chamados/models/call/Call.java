@@ -24,20 +24,25 @@ public class Call implements Serializable {
     private Integer id;
     @Column(name = "creation_dt", nullable = false)
     private LocalDateTime creationDT;
+    public static final String CREATIONDATE = "creationDT";
     @Column(name = "last_update_dt", nullable = false)
     private LocalDateTime lastUpdateDT;
     @JoinColumn(name = "status_id")
     @ManyToOne
     private CallStatus status;
+    public static final String STATUS = "status";
     @JoinColumn(name = "requester_id")
     @ManyToOne
     private User requester;
+    public static final String REQUESTER = "requester";
     @JoinColumn(name = "solver_id")
     @ManyToOne
     private User solver;
+    public static final String SOLVER = "solver";
     @JoinColumn(name = "call_category_id")
     @ManyToOne
     private CallCategory callCategory;
+    public static final String CATEGORY = "callCategory";
     @Column(nullable = false)
     private String description;
     @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)

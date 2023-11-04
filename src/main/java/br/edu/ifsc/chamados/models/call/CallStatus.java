@@ -23,6 +23,7 @@ public class  CallStatus implements Serializable {
     private String name;
     private String description;
     private Integer weight;
+    public static final String WEIGHT = "weight";
     private boolean notify;
     @JsonIgnore
     @OneToMany(mappedBy = "status", orphanRemoval = true, cascade = CascadeType.ALL)

@@ -21,14 +21,17 @@ public class CallCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    public static final String ID = "id";
     @Column(nullable = false)
     private String title;
     @ManyToOne
     @JoinColumn(name = "sector_id")
     private CallSector sector;
+    public static final String SECTOR = "sector";
     @ManyToOne
     @JoinColumn(name = "priority_id")
     private CallPriority priority;
+    public static final String PRIORITY = "priority";
     @Column(nullable = false)
     private String description;
     @JsonIgnore

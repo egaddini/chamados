@@ -21,6 +21,7 @@ public class CallSector implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    public static final String ID = "id";
     @Column(unique = true, nullable = false, length = 3)
     private String acronym;
     @Column(unique = true, nullable = false)

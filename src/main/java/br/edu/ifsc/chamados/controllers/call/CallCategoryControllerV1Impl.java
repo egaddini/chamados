@@ -3,6 +3,7 @@ package br.edu.ifsc.chamados.controllers.call;
 import br.edu.ifsc.chamados.api.controllers.call.CallCategoryControllerV1;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.call.CallCategory;
+import br.edu.ifsc.chamados.requests.CallCategoryFilter;
 import br.edu.ifsc.chamados.requests.CallTypeRequest;
 import br.edu.ifsc.chamados.services.call.CallTypeService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,9 @@ public class CallCategoryControllerV1Impl implements CallCategoryControllerV1 {
     @Autowired
     private CallTypeService svc;
 
-    @GetMapping()
-    public List<CallCategory> findAll() throws Exception {
-        return svc.findAll();
+    @GetMapping
+    public List<CallCategory> findAll(CallCategoryFilter filter) throws Exception {
+        return svc.findAll(filter);
     }
 
     @PostMapping()
