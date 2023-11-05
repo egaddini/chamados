@@ -6,6 +6,7 @@ import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.user.UserResponse;
+import br.edu.ifsc.chamados.response.user.UserTinyResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,4 +27,5 @@ public interface IUserService {
 
     SucessDTO ativaUsuario(String email) throws RecordNotFound2Exception;
 
+    List<UserTinyResponse> findUsersTiny();
 }

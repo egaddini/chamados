@@ -20,6 +20,7 @@ public class  CallStatus implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    public static final String ID = "id";
     private String name;
     private String description;
     private Integer weight;

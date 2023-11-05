@@ -8,6 +8,7 @@ import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.user.UserResponse;
+import br.edu.ifsc.chamados.response.user.UserTinyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,11 @@ public class UserControllerV1Impl implements UserControllerV1 {
     @GetMapping()
     private List<UserResponse> getUsers() {
         return userSvc.findUsers();
+    }
+
+    @GetMapping(TINY_PATH)
+    private List<UserTinyResponse> getUsersReduzido() {
+        return userSvc.findUsersTiny();
     }
 
     @DeleteMapping(ID_PATH)

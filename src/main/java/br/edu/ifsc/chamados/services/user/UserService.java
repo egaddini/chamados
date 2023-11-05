@@ -14,6 +14,7 @@ import br.edu.ifsc.chamados.models.user.UserSector;
 import br.edu.ifsc.chamados.repositories.UserRepository;
 import br.edu.ifsc.chamados.requests.RegisterRequest;
 import br.edu.ifsc.chamados.response.user.UserResponse;
+import br.edu.ifsc.chamados.response.user.UserTinyResponse;
 import br.edu.ifsc.chamados.services.call.SectorService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -47,6 +48,16 @@ public class UserService implements IUserService {
         for (User user: users) {
             response.add(new UserResponse(user.getId(), user.getEmail(), user.getFirstname(), user.getLastname(), user.getPhone(),
                     user.getRole(), null, user.getActive(), user.getCreationDT(), user.getUserSector()));
+        }
+        return response;
+    }
+
+    @Override
+    public List<UserTinyResponse> findUsersTiny() {
+        List<User> users = repository.findAll();
+        List<UserTinyResponse> response = new ArrayList<>();
+        for (User user: users) {
+            response.add(new UserTinyResponse(user.getId(), user.getEmail()));
         }
         return response;
     }

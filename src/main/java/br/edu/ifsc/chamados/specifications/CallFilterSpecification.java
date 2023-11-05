@@ -1,9 +1,6 @@
 package br.edu.ifsc.chamados.specifications;
 
-import br.edu.ifsc.chamados.models.call.Call;
-import br.edu.ifsc.chamados.models.call.CallCategory;
-import br.edu.ifsc.chamados.models.call.CallPriority;
-import br.edu.ifsc.chamados.models.call.CallStatus;
+import br.edu.ifsc.chamados.models.call.*;
 import br.edu.ifsc.chamados.models.user.User;
 import br.edu.ifsc.chamados.requests.CallRequestFilter;
 import jakarta.persistence.criteria.*;
@@ -34,29 +31,36 @@ public class CallFilterSpecification implements Specification<Call> {
                 localDate -> preds.add(cb.lessThanOrEqualTo(root.get(Call.CREATIONDATE), localDate))
             );
 
-            if (filter.getStatusWeight() != null) {
+            if (filter.getStatus() != null && !filter.getStatus().isEmpty()) {
                 Join<Call, CallStatus> joinStatus = root.join(Call.STATUS, JoinType.LEFT);
-                preds.add(cb.equal(joinStatus.get(CallStatus.WEIGHT), filter.getStatusWeight()));
+                preds.add(joinStatus.get(CallStatus.ID).in(filter.getStatus()));
             }
 
-            if (filter.getPriorityID() != null) {
-                Join<Call, CallCategory> joinStatus = root.join(Call.CATEGORY, JoinType.LEFT);
-                Join<CallCategory, CallPriority> joinpPriority = joinStatus.join(CallCategory.PRIORITY, JoinType.LEFT);
-                preds.add(cb.equal(joinpPriority.get(CallPriority.WEIGHT), filter.getStatusWeight()));
-            }
-            if (filter.getCallCategoryID() != null) {
-                Join<Call, CallCategory> joinStatus = root.join(Call.CATEGORY, JoinType.LEFT);
-                preds.add(cb.equal(joinStatus.get(CallCategory.ID), filter.getCallCategoryID()));
+            if (filter.getCategories() != null && !filter.getCategories().isEmpty()) {
+                Join<Call, CallCategory> joinCategory = root.join(Call.CATEGORY, JoinType.LEFT);
+                preds.add(joinCategory.get(CallCategory.ID).in(filter.getCategories()));
             }
 
-           if (filter.getRequesterEmail() != null && !filter.getRequesterEmail().isBlank()) {
+            if (filter.getPriorities() != null && !filter.getPriorities().isEmpty()) {
+                Join<Call, CallCategory> joinCategory = root.join(Call.CATEGORY, JoinType.LEFT);
+                Join<CallCategory, CallPriority> joinPriority = joinCategory.join(CallCategory.PRIORITY, JoinType.LEFT);
+                preds.add(joinPriority.get(CallPriority.ID).in(filter.getPriorities()));
+            }
+
+            if (filter.getSectors() != null && !filter.getSectors().isEmpty()) {
+                Join<Call, CallCategory> joinCategory = root.join(Call.CATEGORY, JoinType.LEFT);
+                Join<CallCategory, CallSector> joinSector = joinCategory.join(CallCategory.SECTOR, JoinType.LEFT);
+                preds.add(joinSector.get(CallCategory.ID).in(filter.getSectors()));
+            }
+
+           if (filter.getRequester() != null && !filter.getRequester().isBlank()) {
                 Join<Call, User> joinStatus = root.join(Call.REQUESTER, JoinType.LEFT);
-                preds.add(cb.equal(joinStatus.get(User.EMAIL), filter.getRequesterEmail()));
+                preds.add(cb.equal(joinStatus.get(User.EMAIL), filter.getRequester()));
            }
 
-           if (filter.getSolverEmail() != null && !filter.getSolverEmail().isBlank()) {
+           if (filter.getSolver() != null && !filter.getSolver().isBlank()) {
                 Join<Call, User> joinStatus = root.join(Call.SOLVER, JoinType.LEFT);
-                preds.add(cb.equal(joinStatus.get(User.EMAIL), filter.getSolverEmail()));
+                preds.add(cb.equal(joinStatus.get(User.EMAIL), filter.getSolver()));
            }
         }
 

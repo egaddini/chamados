@@ -22,7 +22,7 @@ public class CallControllerV1Impl implements CallControllerV1 {
     @Autowired
     private CallService service;
 
-    @GetMapping()
+    @GetMapping
     public List<CallResponse> findAll(CallRequestFilter filter) throws Exception {
         return service.findAllFiltered(filter);
     }
