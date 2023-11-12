@@ -4,11 +4,14 @@ import br.edu.ifsc.chamados.configs.exceptions.RecordNotFound2Exception;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.models.call.Call;
 import br.edu.ifsc.chamados.models.call.CallCategory;
+import br.edu.ifsc.chamados.models.call.CallRating;
 import br.edu.ifsc.chamados.models.user.User;
+import br.edu.ifsc.chamados.repositories.CallRatingRepository;
 import br.edu.ifsc.chamados.repositories.CallRepository;
 import br.edu.ifsc.chamados.repositories.StatusRepository;
 import br.edu.ifsc.chamados.requests.CallRequest;
 import br.edu.ifsc.chamados.requests.CallRequestFilter;
+import br.edu.ifsc.chamados.requests.RatingRequest;
 import br.edu.ifsc.chamados.response.call.CallResponse;
 import br.edu.ifsc.chamados.response.user.UserTinyResponse;
 import br.edu.ifsc.chamados.services.user.UserService;
@@ -36,6 +39,8 @@ public class CallService {
     private StatusRepository statusRepository;
     @Autowired
     private HistoricService historicService;
+    @Autowired
+    private CallRatingRepository callRatingRepo;
 
     public List<CallResponse> findAllFiltered(CallRequestFilter filter) {
         return repository.findAll(new CallFilterSpecification(filter)).stream().map(i ->
@@ -92,6 +97,14 @@ public class CallService {
     public SucessDTO cancela(Integer id, String motivo) throws RecordNotFound2Exception {
         String dataHoraFormatado = DateUtils.getDataHoraFormatado();
         Call call = findUserById(id);
+        repository.save(call);
+        return new SucessDTO("Solicitação realizada com sucesso.");
+    }
+
+    public SucessDTO rate(RatingRequest request) throws RecordNotFound2Exception {
+        Call call = findById(request.getCallID());
+        CallRating rating = callRatingRepo.save(new CallRating(null, request.getSatisfaction(), request.getSolveTime(), request.getFeedback(), null));
+        call.setCallRating(rating);
         repository.save(call);
         return new SucessDTO("Solicitação realizada com sucesso.");
     }

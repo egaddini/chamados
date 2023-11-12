@@ -47,5 +47,8 @@ public class Call implements Serializable {
     private String description;
     @OneToMany(mappedBy = "call", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<CallHistoric> historic;
+    @ManyToOne
+    private CallRating callRating;
+    public static final String CALL_RATING = "callRating";
 
 }

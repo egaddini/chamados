@@ -4,6 +4,7 @@ import br.edu.ifsc.chamados.api.controllers.call.CallControllerV1;
 import br.edu.ifsc.chamados.dto.SucessDTO;
 import br.edu.ifsc.chamados.requests.CallRequest;
 import br.edu.ifsc.chamados.requests.CallRequestFilter;
+import br.edu.ifsc.chamados.requests.RatingRequest;
 import br.edu.ifsc.chamados.response.call.CallResponse;
 import br.edu.ifsc.chamados.services.call.CallService;
 import jakarta.websocket.server.PathParam;
@@ -44,6 +45,11 @@ public class CallControllerV1Impl implements CallControllerV1 {
     @PostMapping(CANCELA_PATH)
     public ResponseEntity<SucessDTO> cancelar(@PathVariable("id") Integer id, @RequestBody String motivo) throws Exception {
         return ResponseEntity.ok(service.cancela(id, motivo));
+    }
+
+    @PostMapping(RATING_PATH)
+    public ResponseEntity<SucessDTO> rating(@RequestBody RatingRequest request) throws Exception {
+        return ResponseEntity.ok(service.rate(request));
     }
 
 }
